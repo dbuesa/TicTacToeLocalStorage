@@ -41,6 +41,16 @@ window.onload = (): void => {
             }
         });
     });
+
+    const h3Element: HTMLElement = document.createElement('h3');
+    document.querySelector('#player-board')?.appendChild(h3Element);
+
+    // Agregar un evento de escucha para el evento 'storage'
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'currentPlayer') {
+            h3Element.textContent = `Player ${event.newValue}'s turn`;
+        }
+    });
     setInterval(checkGameState, 1000);
 };
 
@@ -146,7 +156,10 @@ function makeMove(position: string): void {
     const nextPlayer: "1" | "2" = player === '1' ? '2' : '1';
     localStorage.setItem('currentPlayer', nextPlayer);
 
-
+    const h3Element: HTMLElement | null = document.querySelector('h3');
+    if (h3Element) {
+        h3Element.textContent = `Player ${nextPlayer}'s turn`;
+    }
     refreshBoard();
 }
 
